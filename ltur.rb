@@ -1,3 +1,5 @@
+# author: lha me@lehoanganh.de
+
 require 'rubygems'
 require 'mechanize'
 require 'logger'
@@ -9,8 +11,8 @@ logger.info "-------------------------------------------------------------------
 logger.info "Welcome!"
 logger.info "You're using now LTUR Crawler to find 25 EUR offers"
 logger.info "developed by Hoang Anh Le [me@lehoanganh.de]"
-logger.info "After finding a offer, LTUR will send an email to you via GMail"
-logger.info "Therefore, you have to input your email in order to become the message from LTUR Crawler"
+logger.info "After finding an offer, LTUR will send an email to you via GMail"
+logger.info "Therefore, you have to input your email in order to get messages from LTUR Crawler"
 logger.info "Version 0.1"
 logger.info "------------------------------------------------------------------------------------------------"
 
@@ -41,7 +43,7 @@ logger.info "[5] Hamburg Hbf"
 #logger.info "[5] Saarbruecken Hbf"
 #logger.info "[6] Muenchen Hbf"
 
-logger.info "Input your start city: "
+logger.info "Input your start city:"
 index = gets  
 index = index.chomp # delete the last enter character
 start_city = city_array[index.to_i]
@@ -54,7 +56,7 @@ if start_city.include? "Saarbruecken"
 end
 =end
 
-logger.info "Input your end city: "
+logger.info "Input your end city:"
 index = gets  
 index = index.chomp # delete the last enter character
 end_city = city_array[index.to_i]
@@ -67,12 +69,12 @@ if end_city.include? "Saarbruecken"
 end
 =end
 
-logger.info "Input the time interval for request in minutes (e.g. 10 mins)"
+logger.info "Input the time interval for request in minutes (e.g. 10 mins):"
 interval = gets
 interval = interval.chomp
 interval = interval.to_i
 
-logger.info "Input the email"
+logger.info "Input your email:"
 email = gets
 email = email.chomp
 
@@ -171,12 +173,12 @@ until check
 				logger.info "Yuhu, found!"
 				logger.info "For date: #{tomorrow}"
 				logger.info "from start time: #{start_time}"
-				check = true
+				#check = true # always running, cancel by aborting process
 				Pony.mail({
 				  :to => email,
 				  :via => :smtp,
 				  :subject => 'Your LTUR Crawler Service :)',
-				  :body => "You're lucky, there is a 25 EUR offer for you for date: #{tomorrow} with start time: #{start_time}. Go to the LTUR web site to book bahn.ltur.com!!",
+				  :body => "You're lucky, there is a 25 EUR offer for you for date: #{tomorrow} with start time: #{start_time} for the route #{start_city} - #{end_city}. Go to the LTUR web site to book bahn.ltur.com!!",
 				  :via_options => {
 					:address              => 'smtp.gmail.com',
 					:port                 => '587',
@@ -195,7 +197,7 @@ until check
 	i += 6
 	
 	if x == 6
-		x = 1
+		x = 1 # reset
 		logger.info "sleep"
 		sleep (60 * interval)
 		today = Time.new.to_date
